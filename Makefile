@@ -9,3 +9,7 @@ lint:
 
 lint-fix:
 	golangci-lint run --verbose --fix
+
+.PHONY: test
+test:
+	go test -v ./...

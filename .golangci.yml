@@ -1,0 +1,15 @@
+version: "2"
+run:
+  tests: true
+linters:
+  default: all
+formatters:
+  default: all
+  enable:
+    # - gci # not compatible with goimports and gofumpt, tries to change imports in different way.
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
+  exclusions:
+    generated: lax

@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Install dependencies
-        run: go mod download
+        run: cd broker-service && go mod download
 
       - name: Install golangci-lint
         run: |

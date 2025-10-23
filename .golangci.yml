@@ -2,7 +2,18 @@ version: "2"
 run:
   tests: true
 linters:
-  default: all
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - unused
+    - revive
+    - gocyclo
+    - gosec
+    - bodyclose
+    - forbidigo
+    - misspell
 formatters:
   default: all
   enable:

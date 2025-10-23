@@ -1,7 +1,7 @@
 
 # run
 run-frontend:
-	go run front-end/cmd/web/main.go 
+	cd front-end && go run ./cmd/web/main.go 
 
 run-broker-service:
 	cd broker-service && go run ./cmd/api

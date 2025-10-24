@@ -15,9 +15,11 @@ run-all:
 # pre-commit
 lint:
 	cd broker-service && golangci-lint run --verbose --max-issues-per-linter=0 --max-same-issues=0
+	cd auth-service && golangci-lint run --verbose --max-issues-per-linter=0 --max-same-issues=0
 
 lint-fix:
 	cd broker-service && golangci-lint run --verbose --fix
+	cd auth-service && golangci-lint run --verbose --fix
 
 .PHONY: test
 test:

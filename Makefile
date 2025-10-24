@@ -12,6 +12,9 @@ run-auth-service:
 run-all:
 	docker compose up -d --build
 
+stop-all:
+	docker compose down
+
 # pre-commit
 lint:
 	cd broker-service && golangci-lint run --verbose --max-issues-per-linter=0 --max-same-issues=0

@@ -6,6 +6,9 @@ run-frontend:
 run-broker-service:
 	cd broker-service && go run ./cmd/api
 
+run-all:
+	docker compose up -d --build
+
 # pre-commit
 lint:
 	cd broker-service && golangci-lint run --verbose --max-issues-per-linter=0 --max-same-issues=0

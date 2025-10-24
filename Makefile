@@ -6,6 +6,9 @@ run-frontend:
 run-broker-service:
 	cd broker-service && go run ./cmd/api
 
+run-auth-service:
+	cd auth-service && go run ./cmd/api
+
 run-all:
 	docker compose up -d --build
 

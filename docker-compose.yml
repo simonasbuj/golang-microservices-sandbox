@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   broker-service:
     build:
@@ -22,6 +20,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    environment:
+      - DSN=${DSN}
 
   front-end:
     build:

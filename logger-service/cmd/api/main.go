@@ -6,16 +6,17 @@ import (
 	"log"
 	"logger-service/data"
 	"net/http"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 const (
 	webPort  = "8072"
 	rpcPort  = "7072"
-	mongoURL = "mongodb://mongo:27017"
 	grpcPort = "9072"
 )
 
@@ -65,16 +66,23 @@ func (app *App) serve() {
 }
 
 func connectToMongo() (*mongo.Client, error) {
-	clientOptions := options.Client().ApplyURI(mongoURL)
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URL"))
 	clientOptions.SetAuth(options.Credential{
-		Username: "admig",
-		Password: "password",
+		Username: os.Getenv("MONGO_USERNAME"),
+		Password: os.Getenv("MONGO_PASSWORD"),
 	})
 
 	c, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Println("error connecting: ", err)
 	}
+
+	err = c.Ping(context.Background(), &readpref.ReadPref{})
+	if err != nil {
+		log.Panic("error pinging mongodb: %w", err)
+	}
+
+	log.Println("connected to mongodb")
 
 	return c, nil
 }

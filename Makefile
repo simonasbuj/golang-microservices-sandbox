@@ -9,6 +9,9 @@ run-broker-service:
 run-auth-service:
 	cd auth-service && go run ./cmd/api
 
+run-logger-service:
+	cd logger-service && go run ./cmd/api
+
 run-all:
 	docker compose up -d --build
 

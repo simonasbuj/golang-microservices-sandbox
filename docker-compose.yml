@@ -22,6 +22,21 @@ services:
       replicas: 1
     environment:
       - DSN=${DSN}
+  
+  logger-service:
+    build:
+      context: ./logger-service
+      dockerfile: logger-service.Dockerfile
+    restart: always
+    ports:
+      - "8072:8072"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      MONGO_URL: ${MONGO_URL}
+      MONGO_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_PASSWORD: ${MONGO_ROOT_PASSWORD}
 
   front-end:
     build:
@@ -33,7 +48,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-
 
   postgres:
     image: 'postgres:14.2'
@@ -47,8 +61,19 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: users
     volumes:
-    - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
+  mongo:
+    image: 'mongo:8.0.15'
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: logs
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
 
 volumes:
   postgres-data:
+  mongo-data:

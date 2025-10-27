@@ -26,7 +26,6 @@ type App struct {
 func main() {
 	log.Printf("starting auth-service at port: %s", webPort)
 
-	// TODO connect to DB
 	conn := connectToDb()
 	if conn == nil {
 		log.Panic("can't connect to postgres")

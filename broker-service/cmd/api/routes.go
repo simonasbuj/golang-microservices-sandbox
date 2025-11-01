@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func (app *App) Routes() http.Handler {
+func (app *App) routes() http.Handler {
 	mux := chi.NewRouter()
 
 	// specify who is allowed to connect

@@ -12,6 +12,9 @@ run-auth-service:
 run-logger-service:
 	cd logger-service && go run ./cmd/api
 
+run-mail-service:
+	cd mail-service && go run ./cmd/api
+
 run-all:
 	docker compose up -d --build
 

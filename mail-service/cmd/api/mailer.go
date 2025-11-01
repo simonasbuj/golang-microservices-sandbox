@@ -11,13 +11,14 @@ import (
 )
 
 type Mail struct {
-	Domain     string
-	Host       string
-	Port       int
-	Username   string
-	Password   string
-	Encryption string
-	FromName   string
+	Domain     	string
+	Host       	string
+	Port       	int
+	Username   	string
+	Password   	string
+	Encryption 	string
+	FromName   	string
+	FromAddres	string
 }
 
 type Message struct {
@@ -87,7 +88,7 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 }
 
 func (m *Mail) buildHTMLMessage(msg Message) (string, error) {
-	templateToRender := "./templates/mail.gohtml"
+	templateToRender := "./templates/mail.html.gohtml"
 
 	t, err := template.New("email-html").ParseFiles(templateToRender)
 	if err != nil {

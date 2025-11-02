@@ -221,6 +221,7 @@ func (app *App) logEventViaRabbit(w http.ResponseWriter, l LogPayload) {
 	app.writeJSON(w, http.StatusAccepted, payload)
 }
 
+//nolint:unused
 func (app *App) pushToQueue(name, message string) error {
 	emitter, err := event.NewEventEmmiter(app.rabbitmq)
 	if err != nil {
@@ -242,8 +243,8 @@ func (app *App) pushToQueue(name, message string) error {
 }
 
 type RPCPayload struct {
-	Name 	string 
-	Data 	string
+	Name string
+	Data string
 }
 
 //nolint:unused
@@ -256,12 +257,9 @@ func (app *App) logEventViaRPC(w http.ResponseWriter, l LogPayload) {
 		return
 	}
 
-	rpcPayload := RPCPayload{
-		Name: l.Name,
-		Data: l.Data,
-	}
+	rpcPayload := RPCPayload(l)
 
-	var result string 
+	var result string
 	err = client.Call("RPCServer.LogInfo", rpcPayload, &result)
 	if err != nil {
 		app.errorJSON(w, err)
@@ -269,7 +267,7 @@ func (app *App) logEventViaRPC(w http.ResponseWriter, l LogPayload) {
 	}
 
 	app.writeJSON(w, http.StatusAccepted, jsonResponse{
-		Error: false,
+		Error:   false,
 		Message: result,
 	})
 }

@@ -183,12 +183,19 @@ func (app *App) sendMail(w http.ResponseWriter, msg MailPayload) {
 	bodyStr := string(bodyBytes)
 
 	if response.StatusCode != http.StatusAccepted {
-		app.errorJSON(w, fmt.Errorf("error from mail-service, got status code: %d, response: %s", bodyStr))
+		app.errorJSON(
+			w,
+			fmt.Errorf(
+				"error from mail-service, got status code: %d, response: %s",
+				response.StatusCode,
+				bodyStr,
+			),
+		)
 		return
 	}
 
 	payload := jsonResponse{
-		Error: false,
+		Error:   false,
 		Message: "Message sent to " + msg.To,
 	}
 

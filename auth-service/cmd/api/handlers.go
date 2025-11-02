@@ -13,7 +13,7 @@ import (
 
 func (app *App) Authenticate(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
-		Email 	string `json:"email"`
+		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 
@@ -44,14 +44,13 @@ func (app *App) Authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	payload := jsonResponse{
-		Error: false,
+		Error:   false,
 		Message: fmt.Sprintf("logged in user %s", user.Email),
-		Data: user,
+		Data:    user,
 	}
 
 	app.writeJSON(w, http.StatusAccepted, payload)
 }
-
 
 func (app *App) logRequest(name, data string) error {
 	var entry struct {
@@ -69,7 +68,7 @@ func (app *App) logRequest(name, data string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create request to logger-service, %w", err)
 	}
-	
+
 	client := &http.Client{
 		Timeout: 5 * time.Second,
 	}

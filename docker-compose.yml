@@ -9,6 +9,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    environment:
+      RABBITMQ_URI: ${RABBITMQ_URI}
 
   auth-service:
     build:
@@ -21,7 +23,7 @@ services:
       mode: replicated
       replicas: 1
     environment:
-      - DSN=${DSN}
+      DSN: ${DSN}
   
   logger-service:
     build:

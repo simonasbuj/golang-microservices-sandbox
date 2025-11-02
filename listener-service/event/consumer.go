@@ -128,7 +128,7 @@ func logEvent(entry Payload) error {
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusAccepted {
-		fmt.Errorf("got invalid response, response status: %d", response.StatusCode)
+		return fmt.Errorf("got invalid response, response status: %d", response.StatusCode)
 	}
 
 	return  nil

@@ -1,11 +1,13 @@
 package main
 
 import (
+	"broker-service/event"
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -55,7 +57,7 @@ func (app *App) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 	case "auth":
 		app.authenticate(w, requestPayload.Auth)
 	case "log":
-		app.logItem(w, requestPayload.Log)
+		app.logEventViaRabbit(w, requestPayload.Log)
 	case "mail":
 		app.sendMail(w, requestPayload.Mail)
 	default:
@@ -200,4 +202,38 @@ func (app *App) sendMail(w http.ResponseWriter, msg MailPayload) {
 	}
 
 	app.writeJSON(w, http.StatusAccepted, payload)
+}
+
+func (app *App) logEventViaRabbit(w http.ResponseWriter, l LogPayload) {
+	err := app.pushToQueue(l.Name, l.Data)
+	if err != nil {
+		log.Println(err)
+	}
+
+	payload := jsonResponse{
+		Error: false,
+		Message: "logged via RabbitMQ",
+	}
+
+	app.writeJSON(w, http.StatusAccepted, payload)
+}
+
+func (app *App) pushToQueue(name, message string) error {
+	emitter, err := event.NewEventEmmiter(app.rabbitmq)
+	if err != nil {
+		return fmt.Errorf("failed to create new Emitter: %w", err)
+	}
+
+	payload := LogPayload{
+		Name: name,
+		Data: message,
+	}
+
+	j, _ := json.Marshal(&payload) 
+	err = emitter.Push(string(j), "log.INFO")
+	if err != nil {
+		return fmt.Errorf("failed to push event to rabbitmq: %w", err)
+	}
+
+	return nil
 }

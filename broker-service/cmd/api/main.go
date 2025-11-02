@@ -48,7 +48,7 @@ func main() {
 
 func connect() (*amqp.Connection, error) {
 	connURI := os.Getenv("RABBITMQ_URI")
-
+	
 	var counts int64
 	var backOff = 1 * time.Second
 	var conn *amqp.Connection

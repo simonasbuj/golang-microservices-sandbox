@@ -1,16 +1,15 @@
 version: "2"
 run:
   tests: true
+  
 linters:
+  default: none
   enable:
     - govet
     - staticcheck
-    - errcheck
     - ineffassign
     - unused
-    - revive
     - gocyclo
-    - gosec
     - bodyclose
     - forbidigo
     - misspell

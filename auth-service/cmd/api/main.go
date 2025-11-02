@@ -19,8 +19,8 @@ const webPort = "8071"
 var connectionCounts int
 
 type App struct {
-	DB 		*sql.DB
-	Models	data.Models
+	DB     *sql.DB
+	Models data.Models
 }
 
 func main() {
@@ -33,13 +33,13 @@ func main() {
 
 	// start app
 	app := App{
-		DB:		conn,
+		DB:     conn,
 		Models: data.New(conn),
 	}
 
 	srv := &http.Server{
-		Addr: 		fmt.Sprintf(":%s", webPort),
-		Handler:	app.routes(),
+		Addr:    fmt.Sprintf(":%s", webPort),
+		Handler: app.routes(),
 	}
 
 	err := srv.ListenAndServe()
@@ -64,7 +64,7 @@ func openDB(dsn string) (*sql.DB, error) {
 
 func connectToDb() *sql.DB {
 	dsn := os.Getenv("DSN")
-	
+
 	for {
 		conn, err := openDB(dsn)
 		if err != nil {
@@ -85,4 +85,3 @@ func connectToDb() *sql.DB {
 		continue
 	}
 }
-

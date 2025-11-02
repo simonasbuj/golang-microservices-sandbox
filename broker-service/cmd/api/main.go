@@ -14,7 +14,7 @@ import (
 
 const webPort = "8070"
 
-type App struct{
+type App struct {
 	rabbitmq *amqp.Connection
 }
 
@@ -45,18 +45,16 @@ func main() {
 	}
 }
 
-
 func connect() (*amqp.Connection, error) {
 	connURI := os.Getenv("RABBITMQ_URI")
-	
+
 	var counts int64
-	var backOff = 1 * time.Second
 	var conn *amqp.Connection
 
 	for {
 		c, err := amqp.Dial(connURI)
 		if err != nil {
-			log.Println("rabbitmq not yet ready, error: %w", err)
+			log.Printf("rabbitmq not yet ready, error: %s", err)
 			counts++
 		} else {
 			conn = c
@@ -68,7 +66,7 @@ func connect() (*amqp.Connection, error) {
 			return nil, err
 		}
 
-		backOff = time.Duration(math.Pow(float64(counts), 2)) * time.Second
+		backOff := time.Duration(math.Pow(float64(counts), 2)) * time.Second
 		log.Printf("backing off for %s seconds", backOff)
 		time.Sleep(backOff)
 		continue

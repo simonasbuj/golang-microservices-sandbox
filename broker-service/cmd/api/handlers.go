@@ -117,6 +117,7 @@ func (app *App) authenticate(w http.ResponseWriter, payload AuthPayload) {
 	app.writeJSON(w, http.StatusAccepted, responsePayload)
 }
 
+//nolint:unused
 func (app *App) logItem(w http.ResponseWriter, log LogPayload) {
 	jsonData, _ := json.MarshalIndent(log, "", "\t")
 
@@ -211,7 +212,7 @@ func (app *App) logEventViaRabbit(w http.ResponseWriter, l LogPayload) {
 	}
 
 	payload := jsonResponse{
-		Error: false,
+		Error:   false,
 		Message: "logged via RabbitMQ",
 	}
 
@@ -229,7 +230,7 @@ func (app *App) pushToQueue(name, message string) error {
 		Data: message,
 	}
 
-	j, _ := json.Marshal(&payload) 
+	j, _ := json.Marshal(&payload)
 	err = emitter.Push(string(j), "log.INFO")
 	if err != nil {
 		return fmt.Errorf("failed to push event to rabbitmq: %w", err)

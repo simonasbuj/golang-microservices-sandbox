@@ -37,7 +37,7 @@ func (e *Emmitter) Push(event, severity string) error {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body: []byte(event),
+			Body:        []byte(event),
 		},
 	)
 	if err != nil {

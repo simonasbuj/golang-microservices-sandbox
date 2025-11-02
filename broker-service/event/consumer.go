@@ -11,8 +11,7 @@ import (
 )
 
 type Consumer struct {
-	conn 	*amqp.Connection
-	queue 	string
+	conn *amqp.Connection
 }
 
 func NewConsumer(conn *amqp.Connection) (Consumer, error) {
@@ -43,8 +42,8 @@ func (c *Consumer) setup() error {
 }
 
 type Payload struct {
-	Name 	string 	`json:"name"`
-	Data	string	`json:"data"`	
+	Name string `json:"name"`
+	Data string `json:"data"`
 }
 
 func (c *Consumer) Listen(topics []string) error {
@@ -67,7 +66,6 @@ func (c *Consumer) Listen(topics []string) error {
 			false,
 			nil,
 		)
-
 		if err != nil {
 			return fmt.Errorf("failed to bind a queue: %w", err)
 		}
@@ -77,7 +75,6 @@ func (c *Consumer) Listen(topics []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to start consume messages: %w", err)
 	}
-
 
 	forever := make(chan bool)
 	go func() {
@@ -131,5 +128,5 @@ func logEvent(entry Payload) error {
 		return fmt.Errorf("got invalid response, response status: %d", response.StatusCode)
 	}
 
-	return  nil
+	return nil
 }

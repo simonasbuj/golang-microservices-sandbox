@@ -287,7 +287,10 @@ func (app *App) LogViaGRPC(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	conn, err := grpc.NewClient("logger-service:9072", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(
+		"logger-service:9072",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	if err != nil {
 		app.errorJSON(w, err)
 		return
@@ -295,7 +298,7 @@ func (app *App) LogViaGRPC(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	c := logs.NewLogServiceClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second * 3)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 
 	_, err = c.WriteLog(ctx, &logs.LogRequest{
@@ -310,7 +313,7 @@ func (app *App) LogViaGRPC(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responsePayload := jsonResponse{
-		Error: false,
+		Error:   false,
 		Message: "logged",
 	}
 
